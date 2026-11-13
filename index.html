@@ -1,0 +1,1088 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Premiere Basics Missions</title>
+<meta name="description" content="Work a Premiere Pro mission one step at a time. Read a step, do it, check your screen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Unbounded:wght@700;800&family=Young+Serif&display=swap" rel="stylesheet">
+<script>
+/* Set the theme and text size before the page paints. */
+(function () {
+  try {
+    var d = JSON.parse(localStorage.getItem("wc.premiere-basics.v1") || "{}"), s = d.settings || {};
+    if (s.theme === "light" || s.theme === "dark") document.documentElement.dataset.theme = s.theme;
+    var sizes = [87.5, 100, 112.5, 125, 150];
+    if (typeof s.textSize === "number" && sizes[s.textSize]) document.documentElement.style.fontSize = sizes[s.textSize] + "%";
+  } catch (e) {}
+})();
+</script>
+<style>
+:root {
+  --page: #FFFFFF; --band: #F0F0F2; --ink: #0B0B0C; --ink-2: #3A3A3E; --on-ink: #FFFFFF;
+  --violet: #4A35B5; --amber: #F2A93B; --amber-ink: #7A4E00; --green: #0F6B52; --rust: #B34A26;
+  --line: 1.5px solid var(--ink);
+  --display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --serif: "Young Serif", Georgia, serif;
+  --body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0E0E10; --band: #17171A; --ink: #F4F4F5; --ink-2: #BDBDC4; --on-ink: #0B0B0C;
+    --violet: #8F7EF2; --amber-ink: #F2A93B; --green: #3DB487; --rust: #E5784F; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0E0E10; --band: #17171A; --ink: #F4F4F5; --ink-2: #BDBDC4; --on-ink: #0B0B0C;
+  --violet: #8F7EF2; --amber-ink: #F2A93B; --green: #3DB487; --rust: #E5784F; color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 1.125rem/1.55 var(--body); overflow-wrap: break-word; }
+a { color: var(--violet); font-weight: 700; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+h1, h2, h3, h4, p { margin: 0; }
+h1[tabindex="-1"]:focus, [tabindex="-1"]:focus { outline: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -999px; top: 8px; background: var(--ink); color: var(--on-ink); padding: 8px 12px; z-index: 60; }
+.skip:focus { left: 8px; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+main.wrap { padding-top: 20px; padding-bottom: 56px; }
+.narrow { max-width: 760px; }
+.stack > * + * { margin-top: 16px; }
+.muted { color: var(--ink-2); }
+.eyebrow { font: 700 0.75rem/1.2 var(--display); letter-spacing: .08em; text-transform: uppercase; }
+h1 { font: 800 clamp(1.5rem, 5vw, 2.5rem)/1.1 var(--display); letter-spacing: -0.02em; }
+h2 { font: 700 1.2rem/1.2 var(--display); letter-spacing: -0.01em; }
+h3 { font: 400 1.3rem/1.2 var(--serif); }
+h4 { font: 700 0.8rem/1.2 var(--display); letter-spacing: .06em; text-transform: uppercase; }
+section + section, .block + .block { margin-top: 28px; }
+
+/* Header */
+.app-head { position: sticky; top: var(--wc-bar-height, 0px); z-index: 30; background: var(--page); border-bottom: var(--line); }
+.app-head .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-height: 52px; padding-top: 4px; padding-bottom: 4px; }
+.brand { font: 800 0.8rem/1 var(--display); letter-spacing: .02em; text-transform: uppercase; color: var(--ink); text-decoration: none;
+  border: var(--line); padding: 0 10px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.brand i { width: 12px; height: 12px; background: var(--amber); border: var(--line); display: inline-block; }
+.app-head nav { margin-left: auto; display: flex; gap: 4px; }
+.app-head nav a { color: var(--ink); text-decoration: none; font-size: 1rem; padding: 0 10px; min-height: 44px; display: inline-flex; align-items: center; border: 1.5px solid transparent; white-space: nowrap; }
+.app-head nav a:hover { border-color: var(--ink); }
+.app-head nav a[aria-current="page"] { background: var(--ink); color: var(--on-ink); }
+.icon-btn { min-width: 44px; height: 44px; display: inline-grid; place-items: center; background: transparent; color: var(--ink); border: var(--line); cursor: pointer; padding: 0 6px; font: 700 1rem/1 var(--body); }
+.icon-btn:hover { background: var(--ink); color: var(--on-ink); }
+.icon-btn svg { width: 20px; height: 20px; }
+@media (max-width: 700px) { .app-head .size { display: none; } }
+@media (max-width: 520px) { .app-head nav .opt { display: none; } }
+@media (max-width: 420px) {
+  .app-head .wrap { padding-left: 10px; padding-right: 10px; gap: 4px; }
+  .brand { font-size: 0.68rem; padding: 0 8px; gap: 6px; }
+  .app-head nav .bot { display: none; }
+}
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 8px 18px; font: 700 1.05rem/1.2 var(--body);
+  text-decoration: none; border: var(--line); cursor: pointer; background: var(--ink); color: var(--on-ink); transition: transform .12s, box-shadow .12s; text-align: center; }
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.amber { background: var(--amber); color: #0B0B0C; }
+.btn.big { min-height: 56px; font-size: 1.2rem; width: 100%; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn-row.grow .btn { flex: 1 1 200px; }
+.link-btn { background: none; border: 0; padding: 12px 4px; min-height: 44px; font: 700 1rem/1.2 var(--body); color: var(--violet); text-decoration: underline; cursor: pointer; }
+
+/* Boxes */
+.box { border: var(--line); padding: 16px; background: var(--page); }
+.box.band { background: var(--band); }
+.banner { border: var(--line); border-left: 10px solid var(--amber); padding: 12px 16px; margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
+.banner.warn { border-left-color: var(--rust); }
+details.fold { border: var(--line); }
+details.fold > summary, .fold-btn { cursor: pointer; padding: 12px 16px; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 16px; min-height: 48px; align-items: center; width: 100%; background: none; border: 0; color: var(--ink); font: 700 1.05rem/1.3 var(--body); text-align: left; }
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary::after, .fold-btn::after { content: "+"; font: 800 1.2rem/1 var(--display); }
+details.fold[open] > summary::after, .fold-btn[aria-expanded="true"]::after { content: "\2212"; }
+details.fold[open] > summary, .fold-btn[aria-expanded="true"] { border-bottom: var(--line); }
+.fold-body { padding: 14px 16px; }
+.fold-body > * + * { margin-top: 10px; }
+ul, ol { margin: 0; padding-left: 1.4em; }
+li + li { margin-top: 6px; }
+
+/* Text bits */
+kbd { font: 700 0.9em/1 var(--mono); border: var(--line); border-bottom-width: 3px; padding: 2px 6px; background: var(--page); color: var(--ink); white-space: nowrap; }
+.keys { white-space: nowrap; }
+code.file { font: 0.92em/1.3 var(--mono); background: var(--band); padding: 1px 5px; border: 1px solid var(--ink-2); overflow-wrap: anywhere; }
+.badge { display: inline-flex; align-items: center; gap: 6px; font: 700 0.7rem/1 var(--display); letter-spacing: .06em; text-transform: uppercase; padding: 6px 8px; border: var(--line); background: var(--page); color: var(--ink); }
+.badge.none { border-style: dashed; }
+.badge.progress { background: linear-gradient(135deg, var(--amber) 0 50%, var(--page) 50%); color: var(--ink); }
+.badge.progress span { background: var(--page); padding: 0 3px; }
+.badge.ready { background: var(--amber); color: #0B0B0C; }
+.badge.initialed { background: var(--ink); color: var(--on-ink); }
+
+/* Checklists */
+.checks { list-style: none; padding: 0; }
+.checks li { border: var(--line); margin: 0; }
+.checks li + li { border-top: 0; }
+.checks label { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; cursor: pointer; min-height: 48px; }
+input[type="checkbox"] { appearance: none; -webkit-appearance: none; flex: none; width: 26px; height: 26px; margin: 1px 0 0; border: var(--line); background: var(--page); display: inline-grid; place-items: center; cursor: pointer; }
+input[type="checkbox"]:checked { background: var(--amber); }
+input[type="checkbox"]:checked::after { content: "\2713"; font: 800 18px/1 var(--body); color: #0B0B0C; }
+input[type="text"], input[type="search"], textarea { width: 100%; font: 1rem/1.4 var(--body); color: var(--ink); background: var(--page); border: var(--line); border-radius: 0; padding: 10px; min-height: 44px; }
+textarea { min-height: 76px; resize: vertical; }
+
+/* Home */
+.strip { display: grid; grid-template-columns: repeat(11, 1fr); border: var(--line); list-style: none; padding: 0; }
+.strip li { margin: 0; border-right: var(--line); }
+.strip li:last-child { border-right: 0; }
+.strip a { display: grid; place-items: center; min-height: 52px; text-decoration: none; color: var(--ink); font: 800 0.85rem/1.1 var(--display); padding: 4px 0; }
+.strip a small { font: 700 0.8rem/1 var(--body); display: block; min-height: 0.8rem; }
+.strip a.progress { background: linear-gradient(135deg, var(--amber) 0 50%, transparent 50%); }
+.strip a.ready { background: var(--amber); color: #0B0B0C; }
+.strip a.initialed { background: var(--ink); color: var(--on-ink); }
+@media (max-width: 420px) { .strip { grid-template-columns: repeat(6, 1fr); } .strip li:nth-child(6) { border-right: 0; } .strip li:nth-child(-n+6) { border-bottom: var(--line); } }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 14px; list-style: none; padding: 0; }
+.cards li { margin: 0; }
+.mcard { display: grid; grid-template-columns: 56px 1fr; border: var(--line); text-decoration: none; color: var(--ink); height: 100%; font-weight: 400; transition: transform .12s, box-shadow .12s; }
+.mcard:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+.mcard .num { background: var(--amber); color: #0B0B0C; border-right: var(--line); display: grid; place-items: center; font: 800 1.4rem/1 var(--display); }
+.mcard .info { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.mcard .t { font: 400 1.25rem/1.15 var(--serif); }
+.mcard .min { font-size: 0.95rem; color: var(--ink-2); }
+
+/* Mission page */
+.m-head { border-bottom: var(--line); padding-bottom: 18px; }
+.m-head .goal { font-size: 1.2rem; margin-top: 10px; max-width: 46ch; }
+.m-head .meta { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-top: 12px; }
+.vocab { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start; }
+.vocab details { border: var(--line); max-width: 100%; }
+.vocab summary { cursor: pointer; padding: 10px 14px; font-weight: 700; min-height: 44px; list-style: none; }
+.vocab summary::-webkit-details-marker { display: none; }
+.vocab details[open] summary { background: var(--ink); color: var(--on-ink); }
+.vocab details p { padding: 10px 14px; max-width: 36ch; }
+.seg { display: inline-flex; border: var(--line); }
+.seg button { border: 0; background: var(--page); color: var(--ink); font: 700 1rem/1 var(--body); padding: 0 16px; min-height: 46px; cursor: pointer; }
+.seg button + button { border-left: var(--line); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
+.outline { list-style: none; padding: 0; border: var(--line); }
+.outline li { margin: 0; }
+.outline li + li { border-top: var(--line); }
+.outline .part { background: var(--band); padding: 8px 14px; font: 700 0.75rem/1.3 var(--display); letter-spacing: .05em; text-transform: uppercase; }
+.outline a { display: grid; grid-template-columns: 30px 1fr; gap: 10px; padding: 10px 14px; text-decoration: none; color: var(--ink); font-weight: 400; min-height: 48px; }
+.outline a:hover { background: var(--band); }
+.outline .mark { width: 26px; height: 26px; border: var(--line); display: grid; place-items: center; font: 800 16px/1 var(--body); }
+.outline .done .mark { background: var(--amber); color: #0B0B0C; }
+video { display: block; width: 100%; max-width: 720px; height: auto; border: var(--line); background: #000; }
+
+/* Step player */
+.crumb { font-size: 1rem; }
+.bar { height: 16px; border: var(--line); background: var(--page); margin-top: 10px; }
+.bar span { display: block; height: 100%; background: var(--amber); border-right: var(--line); transition: width .2s; }
+.part-name { font: 700 0.8rem/1.3 var(--display); letter-spacing: .05em; text-transform: uppercase; color: var(--amber-ink); margin-top: 16px; }
+.count { font: 800 1.1rem/1.2 var(--display); margin-top: 4px; }
+.step-card { border: var(--line); border-left: 10px solid var(--amber); padding: 18px 16px; margin-top: 12px; }
+.step-text { font-size: 1.4rem; line-height: 1.45; max-width: 34em; }
+.note { border-left: 4px solid var(--ink-2); padding: 4px 0 4px 12px; color: var(--ink-2); font-size: 1.05rem; }
+.note b { color: var(--ink); }
+.check-box { border: var(--line); background: var(--band); padding: 14px 16px; }
+.check-box h2 { font-size: 0.85rem; letter-spacing: .08em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+.check-box h2::before { content: ""; width: 14px; height: 14px; background: var(--amber); border: var(--line); }
+.check-box p { font-size: 1.25rem; margin-top: 6px; }
+.done-tag { font-weight: 700; display: flex; gap: 8px; align-items: center; }
+.done-tag::before { content: "\2713"; width: 26px; height: 26px; background: var(--amber); color: #0B0B0C; border: var(--line); display: inline-grid; place-items: center; }
+.step-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-top: var(--line); padding-top: 12px; margin-top: 24px; }
+.ways .pick { font: 800 0.95rem/1.2 var(--display); background: var(--ink); color: var(--on-ink); display: inline-block; padding: 8px 12px; }
+.way-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 10px; margin-top: 10px; }
+.way { border: var(--line); padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.way.chosen { border-width: 3px; background: var(--band); }
+.way p { font-size: 1.1rem; flex: 1; }
+.way .btn { min-height: 44px; font-size: 1rem; padding: 6px 12px; }
+.picked { font-weight: 700; display: flex; gap: 8px; align-items: center; }
+.picked::before { content: "\2713"; width: 22px; height: 22px; background: var(--amber); color: #0B0B0C; border: var(--line); display: inline-grid; place-items: center; font-size: 14px; }
+
+/* Write-ins */
+.wi { border: 1.5px dashed var(--ink); padding: 14px; }
+.wi > * + * { margin-top: 10px; }
+.wi table { border-collapse: collapse; width: 100%; }
+.wi th, .wi td { border: var(--line); padding: 8px; text-align: left; vertical-align: top; font-size: 1rem; }
+.wi thead th { background: var(--band); font-size: 0.9rem; }
+.wi td input { min-width: 0; }
+.wi label { display: block; font-weight: 700; margin-bottom: 4px; }
+@media (max-width: 600px) {
+  .wi table, .wi tbody, .wi tr, .wi th, .wi td { display: block; width: 100%; }
+  .wi thead { display: none; }
+  .wi tr + tr { margin-top: 12px; }
+  .wi td, .wi tbody th { border-top: 0; }
+  .wi tbody tr > :first-child { border-top: var(--line); background: var(--band); }
+  .wi td::before { content: attr(data-label); display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+}
+
+/* Full card */
+.card-steps { list-style: none; padding: 0; }
+.card-steps > li { border: var(--line); padding: 14px; margin: 0; }
+.card-steps > li + li { border-top: 0; }
+.card-steps > li.part-row { background: var(--band); font: 700 0.8rem/1.3 var(--display); letter-spacing: .05em; text-transform: uppercase; }
+.card-steps > li > * + * { margin-top: 10px; }
+.cs-main { display: grid; grid-template-columns: 26px 1fr; gap: 12px; cursor: pointer; }
+.cs-main b { font-family: var(--display); font-size: 0.85rem; }
+.cs-check { margin-left: 38px; }
+.cs-extra { margin-left: 38px; }
+@media (max-width: 480px) { .cs-check, .cs-extra { margin-left: 0; } }
+
+/* Stuck panel */
+.stuck-btn { background: var(--amber); color: #0B0B0C; border: var(--line); font: 800 0.8rem/1 var(--display); height: 44px; padding: 0 12px; cursor: pointer; white-space: nowrap; }
+.stuck-btn:hover { background: var(--ink); color: var(--on-ink); }
+.scrim { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 50; }
+.panel { position: fixed; top: var(--wc-bar-height, 0px); right: 0; bottom: 0; width: min(100%, 460px); background: var(--page); border-left: var(--line); z-index: 55; overflow-y: auto; padding: 0 16px 32px; animation: slide .18s ease-out; }
+@keyframes slide { from { transform: translateX(40px); opacity: 0; } }
+.panel-head { position: sticky; top: 0; background: var(--page); display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-bottom: var(--line); z-index: 1; }
+.panel section { margin-top: 22px; }
+.panel section > * + * { margin-top: 10px; }
+.fixes { list-style: none; padding: 0; }
+.fixes li { border: var(--line); padding: 12px; margin: 0; }
+.fixes li + li { border-top: 0; }
+.fixes b { display: block; }
+.keys-table { border-collapse: collapse; width: 100%; }
+.keys-table th, .keys-table td { border: var(--line); padding: 8px; text-align: left; vertical-align: top; font-size: 1rem; }
+.keys-table th { font-weight: 700; width: 44%; }
+.numbered { counter-reset: n; list-style: none; padding: 0; }
+.numbered li { counter-increment: n; display: grid; grid-template-columns: 34px 1fr; gap: 10px; }
+.numbered li::before { content: counter(n); width: 30px; height: 30px; background: var(--ink); color: var(--on-ink); display: grid; place-items: center; font: 800 0.85rem/1 var(--display); }
+
+/* Back on Track */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 10px; list-style: none; padding: 0; }
+.tiles li { border: var(--line); padding: 14px; margin: 0; }
+.tiles .big { font: 800 1.3rem/1.1 var(--display); display: block; margin-bottom: 6px; }
+.tiles .letter { width: 40px; height: 40px; background: var(--amber); color: #0B0B0C; border: var(--line); display: inline-grid; place-items: center; font: 800 1.1rem/1 var(--display); margin-bottom: 8px; }
+.practice { list-style: none; padding: 0; }
+.practice li { border: var(--line); padding: 14px; margin: 0; }
+.practice li + li { border-top: 0; }
+.practice li > * + * { margin-top: 10px; }
+.practice .line { font-size: 1.2rem; }
+.answer { border-left: 10px solid var(--amber); padding: 6px 0 6px 12px; }
+
+/* Print view */
+.p-mission { border-top: 3px solid var(--ink); padding-top: 14px; margin-top: 28px; }
+.p-mission > * + * { margin-top: 12px; }
+.p-step { display: grid; grid-template-columns: 22px 1fr; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--ink-2); break-inside: avoid; page-break-inside: avoid; }
+.p-step > div > * + * { margin-top: 6px; }
+.p-box { width: 18px; height: 18px; border: 1.5px solid var(--ink); display: inline-block; margin-top: 4px; flex: none; }
+.p-part { font: 700 0.85rem/1.3 var(--display); text-transform: uppercase; letter-spacing: .05em; margin-top: 16px; break-after: avoid; }
+.p-check { font-weight: 700; }
+.p-list { list-style: none; padding: 0; }
+.p-list li { display: flex; gap: 10px; break-inside: avoid; }
+.p-table { border-collapse: collapse; width: 100%; break-inside: avoid; }
+.p-table th, .p-table td { border: 1.5px solid var(--ink); padding: 6px 8px; text-align: left; height: 34px; font-size: 0.95rem; }
+.p-rule { border-bottom: 1.5px solid var(--ink); height: 30px; }
+.p-sign { display: flex; flex-wrap: wrap; gap: 12px 40px; font-weight: 700; margin-top: 18px; break-inside: avoid; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  .btn:hover, .mcard:hover { transform: none; }
+}
+@media print {
+  :root, :root[data-theme="dark"], :root:not([data-theme="light"]) { --page: #fff; --band: #fff; --ink: #000; --ink-2: #333; --on-ink: #fff; --violet: #000; --amber: #fff; --amber-ink: #000; color-scheme: light; }
+  html { padding-top: 0 !important; font-size: 11pt !important; }
+  body { background: #fff; color: #000; }
+  #wc-bar, .app-head, .no-print, .banner, .skip, .panel, .scrim, video { display: none !important; }
+  main.wrap { padding: 0; max-width: none; }
+  .p-mission { break-before: page; border-top: 0; margin-top: 0; }
+  .p-mission:first-of-type { break-before: auto; }
+  a { color: #000; text-decoration: none; }
+  code.file { border: 0; padding: 0; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the main part</a>
+<header class="app-head">
+  <div class="wrap">
+    <a class="brand" href="#/"><i aria-hidden="true"></i>Premiere Basics</a>
+    <nav aria-label="Premiere Basics">
+      <a href="#/" data-nav="home" class="opt">Missions</a>
+      <a href="#/back-on-track" data-nav="back-on-track" class="bot">Back on Track</a>
+    </nav>
+    <button class="icon-btn size" type="button" data-act="size" data-d="-1" aria-label="Make the text smaller">A-</button>
+    <button class="icon-btn size" type="button" data-act="size" data-d="1" aria-label="Make the text bigger">A+</button>
+    <button class="stuck-btn" type="button" data-act="stuck" id="stuck-btn">Stuck?</button>
+    <button class="icon-btn" type="button" data-act="theme" id="theme-btn"></button>
+  </div>
+</header>
+<div class="wrap" id="banners"></div>
+<main class="wrap" id="main"><noscript><p>This app needs JavaScript turned on.</p></noscript></main>
+<div id="panel-root"></div>
+<div id="live" class="sr-only" aria-live="polite"></div>
+
+<script src="missions.js"></script>
+<script>
+(function () {
+  "use strict";
+  var D = window.PB_MISSIONS;
+  var main = document.getElementById("main");
+  var root = document.documentElement;
+  if (!D) { main.innerHTML = "<h1>The missions did not load.</h1><p>Check that missions.js is next to index.html.</p>"; return; }
+
+  var KEY = "wc.premiere-basics.v1";
+  var SIZES = [87.5, 100, 112.5, 125, 150];
+  /* These strings were written by Claude, not Tom (see README, Questions for Tom). */
+  var GENERIC_CHECK = "Look at your screen. Does it match the step?";
+  var NO_MATCH = "Press Command + Z to undo, then read the step again.";
+  var DEBUG = /[?&]debug=1/.test(location.search + location.hash);
+  var ALL = D.missions.concat([D.remix]);
+
+  /* ---------- Content helpers ---------- */
+  function stepsOf(m) {
+    var out = [];
+    m.sections.forEach(function (sec) { sec.steps.forEach(function (s) { out.push({ n: s.n, step: s, heading: sec.heading }); }); });
+    return out;
+  }
+  function byKey(k) { for (var i = 0; i < ALL.length; i++) if (keyOf(ALL[i]) === String(k)) return ALL[i]; return null; }
+  function byId(id) { for (var i = 0; i < ALL.length; i++) if (ALL[i].id === id) return ALL[i]; return null; }
+  function keyOf(m) { return m.number == null ? "remix" : String(m.number); }
+  function nameOf(m) { return m.number == null ? m.title : "Mission " + m.number + ": " + m.title; }
+  function shortOf(m) { return m.number == null ? m.title : "Mission " + m.number; }
+  function writeInOf(m, id) { return (m.writeIns || []).filter(function (w) { return w.id === id; })[0] || null; }
+
+  function esc(t) { return String(t == null ? "" : t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+  var MOD = "(?:Command|Shift|Option|Control)";
+  var PH = "\\[(?:YourLastName|Your Last Name|LastName)\\]";
+  var RICH = new RegExp(
+    "(" + MOD + "(?: \\+ " + MOD + ")* \\+ (?:Delete|Enter|Space|[A-Z])\\b)" +
+    "|\\b([Pp]ress )(Space|Home|Enter|Delete|[A-Z])\\b" +
+    "|([A-Za-z0-9]+_(?:[A-Za-z0-9_]|" + PH + ")*(?:\\.[A-Za-z0-9]{3,4}\\b)?)" +
+    "|(" + PH + ")", "g");
+  var PH_RE = new RegExp(PH, "g");
+  function keycaps(combo) {
+    var parts = combo.split(" + ");
+    return '<span class="keys"><span aria-hidden="true">' + parts.map(function (p) { return "<kbd>" + esc(p) + "</kbd>"; }).join(" + ") +
+      '</span><span class="sr-only">' + esc(parts.join(" plus ")) + "</span></span>";
+  }
+  /* Turns Tom's plain text into HTML: keycaps, monospace filenames, and the student's last name. */
+  function rich(text, raw) {
+    var ln = raw ? "" : (store.settings().lastName || "");
+    var src = String(text == null ? "" : text), out = "", last = 0, m;
+    RICH.lastIndex = 0;
+    while ((m = RICH.exec(src))) {
+      out += esc(src.slice(last, m.index));
+      if (m[1]) out += keycaps(m[1]);
+      else if (m[2]) out += esc(m[2]) + keycaps(m[3]);
+      else if (m[4]) out += '<code class="file">' + esc(ln ? m[4].replace(PH_RE, ln) : m[4]) + "</code>";
+      else out += ln ? esc(ln) : esc(m[5]);
+      last = m.index + m[0].length;
+    }
+    return out + esc(src.slice(last));
+  }
+
+  /* ---------- Storage ---------- */
+  function blank() { return { v: 1, settings: {}, missions: {} }; }
+  function blankMission() { return { steps: [], ways: {}, showMe: [], checks: {}, writeIns: {}, status: null, initialedOn: null, stepCount: null }; }
+  function ints(a) {
+    var out = [];
+    if (Array.isArray(a)) a.forEach(function (x) { if (typeof x === "number" && x >= 0 && x < 200 && x === Math.floor(x) && out.indexOf(x) < 0) out.push(x); });
+    return out;
+  }
+  /* Rebuilds saved data from scratch so a bad or edited code cannot put anything unexpected in storage. */
+  function sanitize(o) {
+    if (!o || typeof o !== "object" || o.v !== 1) return null;
+    var out = blank(), s = o.settings && typeof o.settings === "object" ? o.settings : {};
+    if (s.theme === "light" || s.theme === "dark") out.settings.theme = s.theme;
+    if (typeof s.textSize === "number" && SIZES[s.textSize]) out.settings.textSize = s.textSize;
+    if (s.layout === "steps" || s.layout === "card") out.settings.layout = s.layout;
+    if (typeof s.lastName === "string") out.settings.lastName = s.lastName.slice(0, 40);
+    ["botDismissed", "howToSeen", "howToOpen"].forEach(function (k) { if (typeof s[k] === "boolean") out.settings[k] = s[k]; });
+    if (s.last && typeof s.last.m === "string" && typeof s.last.n === "number") out.settings.last = { m: s.last.m.slice(0, 8), n: s.last.n };
+    var ms = o.missions && typeof o.missions === "object" ? o.missions : {};
+    Object.keys(ms).forEach(function (id) {
+      var a = ms[id];
+      if (!/^(m\d|remix|launch)$/.test(id) || !a || typeof a !== "object") return;
+      var b = blankMission();
+      b.steps = ints(a.steps); b.showMe = ints(a.showMe);
+      if (a.ways && typeof a.ways === "object") Object.keys(a.ways).forEach(function (n) { if (/^\d{1,3}$/.test(n) && /^[A-F]$/.test(a.ways[n])) b.ways[n] = a.ways[n]; });
+      if (a.checks && typeof a.checks === "object") ["files", "pre"].forEach(function (g) { if (a.checks[g]) b.checks[g] = ints(a.checks[g]); });
+      if (a.writeIns && typeof a.writeIns === "object") Object.keys(a.writeIns).slice(0, 20).forEach(function (wid) {
+        var w = a.writeIns[wid];
+        if (!/^[a-z0-9]{1,20}$/i.test(wid) || !w || typeof w !== "object") return;
+        b.writeIns[wid] = {};
+        Object.keys(w).slice(0, 60).forEach(function (k) { if (/^[a-z0-9]{1,10}$/i.test(k) && typeof w[k] === "string") b.writeIns[wid][k] = w[k].slice(0, 2000); });
+      });
+      if (a.status === "initialed") b.status = "initialed";
+      if (typeof a.initialedOn === "string" && /^\d{4}-\d{2}-\d{2}$/.test(a.initialedOn)) b.initialedOn = a.initialedOn;
+      if (typeof a.stepCount === "number") b.stepCount = a.stepCount;
+      out.missions[id] = b;
+    });
+    return out;
+  }
+  function toCode(obj) { return "PB1." + btoa(unescape(encodeURIComponent(JSON.stringify(obj)))).replace(/=+$/, ""); }
+  function fromCode(code) {
+    try {
+      var t = String(code || "").trim();
+      if (t.charAt(0) === "{") return sanitize(JSON.parse(t));
+      if (t.indexOf("PB1.") !== 0) return null;
+      return sanitize(JSON.parse(decodeURIComponent(escape(atob(t.slice(4).replace(/\s+/g, ""))))));
+    } catch (e) { return null; }
+  }
+
+  /*
+    ProgressStore interface: get, setStep, setShowMe, setStatus, setWriteIn, setSetting, all, exportCode, importCode, clearAll
+    (plus setWay, setCheck, ackUpdate, settings, hasProgress, inMemory).
+    A future Walsh Classroom accounts store would plug in here by offering the same methods.
+  */
+  function LocalProgressStore(countFor) {
+    var data = blank(), memory = false;
+    try { localStorage.setItem(KEY + ".test", "1"); localStorage.removeItem(KEY + ".test"); } catch (e) { memory = true; }
+    if (!memory) {
+      var rawText = null;
+      try { rawText = localStorage.getItem(KEY); } catch (e) { memory = true; }
+      if (rawText) { try { data = sanitize(JSON.parse(rawText)) || blank(); } catch (e) { data = blank(); } }
+    }
+    function save() {
+      if (memory) return;
+      try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { memory = true; drawBanners(); }
+    }
+    function M(id) {
+      if (!data.missions[id]) data.missions[id] = blankMission();
+      var m = data.missions[id];
+      if (m.stepCount == null) m.stepCount = countFor(id);
+      return m;
+    }
+    function toggle(arr, v, on) { var i = arr.indexOf(v); if (on && i < 0) arr.push(v); if (!on && i >= 0) arr.splice(i, 1); }
+    return {
+      get: function (id) { return data.missions[id] || blankMission(); },
+      setStep: function (id, n, done) { toggle(M(id).steps, n, done); save(); },
+      setShowMe: function (id, i, done) { toggle(M(id).showMe, i, done); save(); },
+      setCheck: function (id, group, i, done) { var m = M(id); if (!m.checks[group]) m.checks[group] = []; toggle(m.checks[group], i, done); save(); },
+      setWay: function (id, n, label) { var m = M(id); if (label) m.ways[n] = label; else delete m.ways[n]; save(); },
+      setStatus: function (id, status, date) { var m = M(id); m.status = status; m.initialedOn = status === "initialed" ? date : null; save(); },
+      setWriteIn: function (id, wid, value) { M(id).writeIns[wid] = value; save(); },
+      ackUpdate: function (id) { var m = M(id), c = countFor(id); m.stepCount = c; m.steps = m.steps.filter(function (n) { return n <= c; }); save(); },
+      setSetting: function (k, v) { data.settings[k] = v; save(); },
+      settings: function () { return data.settings; },
+      all: function () { return data; },
+      hasProgress: function () { return Object.keys(data.missions).length > 0; },
+      inMemory: function () { return memory; },
+      exportCode: function () { return toCode(data); },
+      importCode: function (code) { var d = fromCode(code); if (!d) return false; data = d; save(); return true; },
+      clearAll: function () { data = blank(); if (!memory) { try { localStorage.removeItem(KEY); } catch (e) {} } }
+    };
+  }
+  var store = LocalProgressStore(function (id) { var m = byId(id); return m ? stepsOf(m).length : null; });
+
+  /* ---------- Status ---------- */
+  function statusOf(m) {
+    var p = store.get(m.id), total = stepsOf(m).length;
+    if (p.status === "initialed") return "initialed";
+    var allShow = m.showMe.items.every(function (x, i) { return p.showMe.indexOf(i) >= 0; });
+    if (p.steps.length >= total && allShow) return "ready";
+    if (p.steps.length || p.showMe.length) return "progress";
+    return "none";
+  }
+  var ST = {
+    none: { label: "Not started", mark: "" },
+    progress: { label: "In progress", mark: "…" },
+    ready: { label: "Ready for Show Me", mark: "!" },
+    initialed: { label: "Initialed", mark: "✓" }
+  };
+  function badge(m) {
+    var s = statusOf(m), p = store.get(m.id), extra = "";
+    if (s === "progress") extra = " " + p.steps.length + " of " + stepsOf(m).length;
+    return '<span class="badge ' + s + '"><span>' + (ST[s].mark ? ST[s].mark + " " : "") + ST[s].label + extra + "</span></span>";
+  }
+  function firstUndone(m) {
+    var p = store.get(m.id), s = stepsOf(m);
+    for (var i = 0; i < s.length; i++) if (p.steps.indexOf(s[i].n) < 0) return s[i].n;
+    return null;
+  }
+  function continueTarget() {
+    var last = store.settings().last, m = last && byId(last.m), f;
+    function forMission(x, n) {
+      if (n == null) return { href: "#/m/" + keyOf(x) + "/show-me", label: "Continue: " + shortOf(x) + ", Show Me" };
+      return { href: "#/m/" + keyOf(x) + "/s/" + n, label: "Continue: " + shortOf(x) + ", Step " + n };
+    }
+    if (m && statusOf(m) !== "initialed") {
+      var p = store.get(m.id);
+      if (last.n <= stepsOf(m).length && p.steps.indexOf(last.n) < 0) return forMission(m, last.n);
+      return forMission(m, firstUndone(m));
+    }
+    for (var i = 0; i < D.missions.length; i++) {
+      var x = D.missions[i];
+      if (statusOf(x) === "initialed") continue;
+      f = firstUndone(x);
+      if (!store.hasProgress()) return { href: "#/m/" + keyOf(x) + "/s/1", label: "Start " + shortOf(x) };
+      return forMission(x, f);
+    }
+    return null;
+  }
+
+  /* ---------- Shared pieces ---------- */
+  function checklist(kind, mid, items, checked, raw) {
+    return '<ul class="checks">' + items.map(function (t, i) {
+      return '<li><label><input type="checkbox" data-chg="' + kind + '" data-m="' + mid + '" data-i="' + i + '"' + (checked.indexOf(i) >= 0 ? " checked" : "") + "><span>" + rich(t, raw) + "</span></label></li>";
+    }).join("") + "</ul>";
+  }
+  function writeInHtml(m, id) {
+    var w = writeInOf(m, id); if (!w) return "";
+    var v = store.get(m.id).writeIns[id] || {}, h = '<div class="wi"><h4>Write it here, or on your mission card</h4><p class="muted">This is optional. It saves on this computer only.</p>';
+    if (w.kind === "table") {
+      h += '<table><caption class="sr-only">' + esc(w.title) + "</caption><thead><tr>" + w.columns.map(function (c) { return '<th scope="col">' + esc(c) + "</th>"; }).join("") + "</tr></thead><tbody>";
+      w.rows.forEach(function (r, ri) {
+        h += '<tr><th scope="row">' + rich(r) + "</th>";
+        for (var c = 1; c < w.columns.length; c++) {
+          var k = "r" + ri + "c" + c;
+          h += '<td data-label="' + esc(w.columns[c]) + '"><input type="text" data-wi="' + id + '" data-m="' + m.id + '" data-k="' + k + '" value="' + esc(v[k] || "") + '" aria-label="' + esc(w.columns[c] + ", " + r) + '"></td>';
+        }
+        h += "</tr>";
+      });
+      h = h.replace("<table>", "<p><b>" + esc(w.title) + "</b></p><table>") + "</tbody></table>";
+    } else {
+      w.prompts.forEach(function (p, i) {
+        var k = "p" + i, fid = "wi-" + m.id + "-" + id + "-" + i;
+        h += '<div><label for="' + fid + '">' + esc(p) + '</label><textarea id="' + fid + '" data-wi="' + id + '" data-m="' + m.id + '" data-k="' + k + '">' + esc(v[k] || "") + "</textarea></div>";
+      });
+    }
+    return h + "</div>";
+  }
+  /* Worksheet pieces that no step points to (the Mission 6 Cut Card). Shown after the steps and on Show Me. */
+  function looseWriteIns(m) {
+    var used = {};
+    stepsOf(m).forEach(function (x) { if (x.step.writeIn) used[x.step.writeIn] = true; });
+    return (m.writeIns || []).filter(function (w) { return !used[w.id]; }).map(function (w) { return writeInHtml(m, w.id); }).join("");
+  }
+  var showAllWays = {};
+  function waysHtml(m, step) {
+    if (!step.ways) return "";
+    var chosen = store.get(m.id).ways[step.n], open = showAllWays[m.id + ":" + step.n];
+    var h = '<div class="ways" data-m="' + m.id + '" data-n="' + step.n + '"><p class="pick">Pick ONE way</p><div class="way-grid">';
+    step.ways.forEach(function (w) {
+      if (chosen && chosen !== w.label && !open) return;
+      h += '<div class="way' + (chosen === w.label ? " chosen" : "") + '"><h4>Way ' + esc(w.label) + "</h4><p>" + rich(w.text) + "</p>" +
+        (chosen === w.label ? '<span class="picked">You picked this one</span>'
+          : '<button class="btn ghost" type="button" data-act="way" data-w="' + esc(w.label) + '">I\'m using this one<span class="sr-only">: Way ' + esc(w.label) + "</span></button>") + "</div>";
+    });
+    h += "</div>";
+    if (chosen) h += '<button class="link-btn" type="button" data-act="ways-toggle">' + (open ? "Hide the other ways" : "Show the other ways") + "</button>";
+    return h + "</div>";
+  }
+  function videoHtml(m) {
+    if (!m.video || !m.video.file) return m.noVideoNote ? '<p class="muted">' + esc(m.noVideoNote) + "</p>" : "";
+    return '<details class="fold" id="video-fold" hidden><summary>Stuck? Watch this</summary><div class="fold-body">' +
+      '<p class="muted">It has captions and no sound. Pause it any time.</p>' +
+      '<video controls muted playsinline preload="none" src="assets/videos/' + esc(m.video.file) + '" aria-label="How-to video for ' + esc(nameOf(m)) + '. Captions are on screen. No sound."></video>' +
+      "</div></details>";
+  }
+  function probeVideo(m) {
+    var fold = document.getElementById("video-fold");
+    if (!fold) return;
+    var v = document.createElement("video");
+    v.preload = "metadata"; v.muted = true;
+    v.onloadedmetadata = function () { fold.hidden = false; v.removeAttribute("src"); };
+    v.onerror = function () { fold.remove(); };
+    v.src = "assets/videos/" + m.video.file;
+  }
+  function updateNote(m) {
+    var p = store.get(m.id), total = stepsOf(m).length;
+    if (p.stepCount == null || p.stepCount === total) return "";
+    return '<div class="banner warn"><p><b>This mission was updated.</b> Check that your steps still match.</p><button class="btn ghost" type="button" data-act="ack" data-m="' + m.id + '">OK, I checked</button></div>';
+  }
+
+  /* ---------- Views ---------- */
+  function viewHome() {
+    var s = store.settings(), ct = continueTarget(), h = '<div class="stack">';
+    h += '<div><p class="eyebrow">Videography</p><h1 tabindex="-1">My Missions</h1><p style="margin-top:8px">Work one step at a time. Keep this window open next to Premiere.</p></div>';
+    h += ct ? '<a class="btn amber big" href="' + ct.href + '">' + esc(ct.label) + "</a>" : '<p class="box band"><b>Every mission is initialed.</b> Nice work. Try the Launch check below.</p>';
+    h += '<p><a href="#/back-on-track">New here? Start with Back on Track</a></p>';
+    h += '<nav aria-label="Mission progress"><ol class="strip">' + ALL.map(function (m) {
+      var st = statusOf(m);
+      return '<li><a class="' + st + '" href="#/m/' + keyOf(m) + '" aria-label="' + esc(nameOf(m) + ": " + ST[st].label) + '"><span>' + (m.number == null ? "R" : m.number) + "<small>" + ST[st].mark + "</small></span></a></li>";
+    }).join("") + "</ol></nav>";
+    h += '<details class="fold"><summary>How this works</summary><div class="fold-body"><ul>' + D.howThisWorks.map(function (t) { return "<li>" + rich(t) + "</li>"; }).join("") + "</ul></div></details>";
+    function card(m) {
+      return '<li><a class="mcard" href="#/m/' + keyOf(m) + '"><span class="num" aria-hidden="true">' + (m.number == null ? "R" : m.number) + '</span><span class="info"><span class="t">' + esc(m.number == null ? m.title : "Mission " + m.number + ": " + m.title) + "</span>" +
+        '<span class="min">' + (m.minutes ? "About " + m.minutes + " minutes" : "For when you finish early") + "</span>" + badge(m) + "</span></a></li>";
+    }
+    var lp = store.get("launch").showMe.length;
+    h += '<section><h2>Missions</h2><ul class="cards" style="margin-top:12px">' + D.missions.map(card).join("") +
+      '<li><a class="mcard" href="#/launch"><span class="num" aria-hidden="true">✓</span><span class="info"><span class="t">' + esc(D.launchCheck.title) + '</span><span class="min">After Mission 9</span><span class="badge' + (lp ? "" : " none") + '">' + lp + " of " + D.launchCheck.items.length + " checked</span></span></a></li>" +
+      card(D.remix) + "</ul></section>";
+    h += '<section class="box band"><h2>Career connection</h2><p style="margin-top:8px">' + esc(D.careerConnection.text) + '</p><p class="muted" style="margin-top:8px;font-size:1rem">Source: <a href="' + esc(D.careerConnection.sourceUrl) + '" target="_blank" rel="noopener">' + esc(D.careerConnection.sourceName) + "</a></p></section>";
+    h += '<section><p class="btn-row"><a href="#/teachers">Teachers</a><span aria-hidden="true">|</span><a href="#/print/all">Print all</a><span aria-hidden="true">|</span><a href="#/settings">Save or load my progress</a></p></section>';
+    return { title: "My Missions", html: h + "</div>", nav: "home" };
+  }
+
+  function missionHead(m) {
+    return '<div class="m-head"><p class="eyebrow">' + esc(m.number == null ? "Bonus" : "Mission " + m.number) + '</p><h1 tabindex="-1">' + esc(m.title) + '</h1><p class="goal">' + rich(m.goal) + '</p><div class="meta">' +
+      (m.minutes ? "<span>About " + m.minutes + " minutes</span>" : "") + '<span id="m-status">' + badge(m) + "</span>" +
+      (DEBUG ? '<span class="badge none">wording: ' + esc(m.wordingStatus) + "</span>" : "") + "</div></div>";
+  }
+  function viewMission(m) {
+    var s = store.settings(), p = store.get(m.id), k = keyOf(m), layout = s.layout === "card" ? "card" : "steps";
+    var howOpen = s.howToSeen ? !!s.howToOpen : true;
+    if (!s.howToSeen) store.setSetting("howToSeen", true);
+    var f = firstUndone(m), started = p.steps.length > 0;
+    var h = '<div class="stack">' + missionHead(m) + updateNote(m);
+    if (m.intro) h += '<p class="box band">' + rich(m.intro) + "</p>";
+    if (m.files && m.files.length) {
+      h += '<section><h2>Files for this mission</h2>';
+      if (m.filesHint) h += '<p class="muted" style="margin-top:6px">' + rich(m.filesHint) + "</p>";
+      else if (m.number !== 0) h += '<p class="muted" style="margin-top:6px">Download these from the Google Classroom assignment into your Premiere Basics folder.</p>';
+      h += '<div style="margin-top:10px">' + checklist("files", m.id, m.files, (p.checks.files || [])) + "</div>";
+      if (m.clipFolder) h += '<p class="muted" style="margin-top:8px;font-size:1rem">Clip folder: ' + esc(m.clipFolder) + "</p>";
+      h += "</section>";
+    }
+    if (m.vocabulary && m.vocabulary.length) {
+      h += '<section><h2>Words to know</h2><div class="vocab" style="margin-top:10px">' + m.vocabulary.map(function (v) {
+        return "<details><summary>" + esc(v.term) + "</summary><p>" + esc(v.def) + "</p></details>";
+      }).join("") + "</div></section>";
+    }
+    h += '<section class="stack"><div class="fold" style="border:var(--line)"><button class="fold-btn" type="button" data-act="howto" aria-expanded="' + howOpen + '" aria-controls="howto-body">How to use this card</button><div class="fold-body" id="howto-body"' + (howOpen ? "" : " hidden") + "><p>" + rich(D.howToUse) + "</p></div></div>";
+    h += videoHtml(m) + "</section>";
+    h += '<section class="stack"><h2>Steps</h2><div><div class="seg" role="group" aria-label="How to show the steps"><button type="button" data-act="layout" data-v="steps" aria-pressed="' + (layout === "steps") + '">Step by step</button><button type="button" data-act="layout" data-v="card" aria-pressed="' + (layout === "card") + '">Full card</button></div></div>';
+    if (layout === "steps") {
+      h += '<a class="btn amber big" href="#/m/' + k + (f == null ? "/show-me" : "/s/" + f) + '">' + (f == null ? "Go to Show Me" : (started ? "Continue at Step " + f : "Start at Step 1")) + "</a>";
+      h += '<ol class="outline">';
+      var lastHead = null;
+      stepsOf(m).forEach(function (x) {
+        if (x.heading && x.heading !== lastHead) { h += '<li class="part">' + esc(x.heading) + "</li>"; lastHead = x.heading; }
+        var done = p.steps.indexOf(x.n) >= 0;
+        h += '<li class="' + (done ? "done" : "") + '"><a href="#/m/' + k + "/s/" + x.n + '"><span class="mark" aria-hidden="true">' + (done ? "✓" : x.n) + '</span><span><span class="sr-only">Step ' + x.n + (done ? ", done" : "") + ": </span>" + rich(x.step.text) + "</span></a></li>";
+      });
+      h += "</ol>";
+    } else {
+      h += fullCard(m);
+    }
+    h += looseWriteIns(m) + '<p><a class="btn ghost" href="#/m/' + k + '/show-me">Show Me check</a></p></section>';
+    if (m.career) h += '<section class="box band"><h2>Career connection</h2><p style="margin-top:8px">' + esc(m.career) + "</p></section>";
+    h += '<section><p class="btn-row"><a href="#/">All missions</a><span aria-hidden="true">|</span><a href="#/print/' + k + '">Print this mission</a></p></section>';
+    return { title: nameOf(m), html: h + "</div>", after: function () { if (m.video) probeVideo(m); } };
+  }
+  function fullCard(m) {
+    var p = store.get(m.id), h = '<ol class="card-steps">', lastHead = null;
+    stepsOf(m).forEach(function (x) {
+      var s = x.step;
+      if (x.heading && x.heading !== lastHead) { h += '<li class="part-row">' + esc(x.heading) + "</li>"; lastHead = x.heading; }
+      h += '<li><label class="cs-main"><input type="checkbox" data-chg="step" data-m="' + m.id + '" data-i="' + s.n + '"' + (p.steps.indexOf(s.n) >= 0 ? " checked" : "") + "><span><b>Step " + s.n + ".</b> " + rich(s.text) + "</span></label>";
+      if (s.ways) h += '<div class="cs-extra">' + waysHtml(m, s) + "</div>";
+      if (s.check) h += '<p class="cs-check"><b>Check:</b> ' + rich(s.check) + "</p>";
+      if (s.note) h += '<p class="note cs-extra"><b>Tip:</b> ' + rich(s.note) + "</p>";
+      if (s.writeIn) h += '<div class="cs-extra">' + writeInHtml(m, s.writeIn) + "</div>";
+      h += "</li>";
+    });
+    return h + "</ol>";
+  }
+
+  var ui = { key: "", phase: "read", focus: null };
+  function viewStep(m, n) {
+    var list = stepsOf(m), idx = -1;
+    list.forEach(function (x, i) { if (x.n === n) idx = i; });
+    if (idx < 0) return viewMission(m);
+    var x = list[idx], s = x.step, k = keyOf(m), total = list.length, p = store.get(m.id), done = p.steps.indexOf(n) >= 0;
+    var prev = idx > 0 ? "#/m/" + k + "/s/" + list[idx - 1].n : "#/m/" + k;
+    var next = idx < total - 1 ? "#/m/" + k + "/s/" + list[idx + 1].n : "#/m/" + k + "/show-me";
+    var last = store.settings().last;
+    if (!last || last.m !== m.id || last.n !== n) store.setSetting("last", { m: m.id, n: n });
+    var h = '<div class="narrow stack" style="margin:0 auto"><div><p class="crumb"><a href="#/m/' + k + '">' + esc(nameOf(m)) + "</a></p>" +
+      '<div class="bar" role="progressbar" aria-label="Mission progress" aria-valuemin="0" aria-valuemax="' + total + '" aria-valuenow="' + (idx + 1) + '" aria-valuetext="Step ' + (idx + 1) + " of " + total + '"><span style="width:' + Math.round((idx + 1) / total * 100) + '%"></span></div>' +
+      (x.heading ? '<p class="part-name">' + esc(x.heading) + "</p>" : "") +
+      '<h1 class="count" tabindex="-1">Step ' + n + " of " + total + "</h1></div>" + updateNote(m);
+    h += '<div class="step-card"><p class="eyebrow">Read it, then do it</p><p class="step-text" style="margin-top:6px">' + rich(s.text) + "</p></div>";
+    if (s.ways) h += waysHtml(m, s);
+    if (s.note) h += '<p class="note"><b>Tip:</b> ' + rich(s.note) + "</p>";
+    if (s.writeIn) h += writeInHtml(m, s.writeIn);
+    var checkBox = '<div class="check-box" id="check-box" tabindex="-1"><h2>Check it</h2><p>' + rich(s.check || GENERIC_CHECK) + "</p></div>";
+    if (done) {
+      h += checkBox + '<p class="done-tag">You finished this step.</p><div class="btn-row grow"><a class="btn amber" href="' + next + '">' + (idx < total - 1 ? "Next step" : "Go to Show Me") + '</a><button class="btn ghost" type="button" data-act="undone">Mark it not done</button></div>';
+    } else if (ui.phase === "read") {
+      h += '<button class="btn amber big" type="button" data-act="did" id="did-btn">I did it</button>';
+    } else if (ui.phase === "check") {
+      h += checkBox + '<div class="btn-row grow"><button class="btn amber" type="button" data-act="match">My screen matches</button><button class="btn ghost" type="button" data-act="nomatch">My screen does not match</button></div>';
+    } else {
+      h += '<div class="check-box" id="nomatch-box" tabindex="-1"><h2>Try again</h2><p>' + rich(NO_MATCH) + '</p></div><div class="btn-row grow"><button class="btn amber" type="button" data-act="reread">Back to the step</button><button class="btn ghost" type="button" data-act="stuck">Open Stuck?</button></div>';
+    }
+    h += '<nav class="step-nav" aria-label="Steps"><a class="btn ghost" href="' + prev + '"><span aria-hidden="true">←</span> Back</a>' +
+      (done ? "" : '<button class="link-btn" type="button" data-act="skip">Skip check</button>') +
+      '<a class="btn ghost" href="' + next + '">Next <span aria-hidden="true">→</span></a></nav>';
+    h += '<p class="muted no-print" style="font-size:0.95rem">Keys: Right arrow or Enter moves on. Left arrow goes back.</p></div>';
+    return { title: "Step " + n + ", " + nameOf(m), html: h, step: { m: m, n: n, prev: prev, next: next, done: done }, live: "Step " + n + " of " + total + (x.heading ? ". " + x.heading : "") };
+  }
+
+  function showMeStatus(m) {
+    var p = store.get(m.id), st = statusOf(m), h = "<p>" + badge(m) + "</p>";
+    if (st === "initialed") {
+      var d = p.initialedOn ? new Date(p.initialedOn + "T12:00:00").toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" }) : "";
+      h += "<p><b>You marked this mission initialed" + (d ? " on " + esc(d) : "") + '.</b></p><p><button class="link-btn" type="button" data-act="uninitial" data-m="' + m.id + '">Undo, I do not have my initials yet</button></p>';
+    } else {
+      if (st === "ready") h += "<p><b>You are ready.</b> " + esc(D.habits.showMeThen) + "</p>";
+      else {
+        var f = firstUndone(m);
+        h += '<p class="muted">' + (f != null ? 'Some steps are not checked off yet. <a href="#/m/' + keyOf(m) + "/s/" + f + '">Go to Step ' + f + "</a>" : "Check every box in the list above when you can point to it.") + "</p>";
+      }
+      h += '<p><button class="btn ' + (st === "ready" ? "amber" : "ghost") + '" type="button" data-act="initial" data-m="' + m.id + '">I got my initials</button></p>';
+    }
+    return h + '<p class="muted">Your initials on your mission card are the official record.</p>';
+  }
+  function viewShowMe(m) {
+    var p = store.get(m.id), k = keyOf(m);
+    var h = '<div class="narrow stack" style="margin:0 auto"><div><p class="crumb"><a href="#/m/' + k + '">' + esc(nameOf(m)) + '</a></p><h1 tabindex="-1" style="margin-top:8px">Show Me</h1></div>' +
+      '<section><h2>Before you get initials</h2><div style="margin-top:10px">' + checklist("pre", m.id, D.habits.showMeCheck, p.checks.pre || []) + "</div></section>" +
+      '<section><h2>' + esc(shortOf(m)) + ': show me</h2><p style="margin-top:6px">' + esc(m.showMe.intro) + '</p><div style="margin-top:10px">' + checklist("showme", m.id, m.showMe.items, p.showMe) + "</div></section>" + looseWriteIns(m) +
+      '<section class="box stack" id="sm-status" aria-live="polite">' + showMeStatus(m) + "</section>";
+    if (m.career) h += '<section class="box band"><h2>Career connection</h2><p style="margin-top:8px">' + esc(m.career) + "</p></section>";
+    h += '<p class="btn-row"><a href="#/m/' + k + '">Back to the mission</a><span aria-hidden="true">|</span><a href="#/">All missions</a></p></div>';
+    return { title: "Show Me, " + nameOf(m), html: h };
+  }
+
+  function viewLaunch() {
+    var L = D.launchCheck, c = D.careerConnection;
+    var h = '<div class="narrow stack" style="margin:0 auto"><h1 tabindex="-1">' + esc(L.title) + "</h1><p>" + esc(L.intro) + "</p>" + checklist("launch", "launch", L.items, store.get("launch").showMe) +
+      '<section class="box band"><h2>Career connection</h2><p style="margin-top:8px">' + esc(c.text) + '</p><p class="muted" style="margin-top:8px;font-size:1rem">Source: <a href="' + esc(c.sourceUrl) + '" target="_blank" rel="noopener">' + esc(c.sourceName) + "</a></p></section>" +
+      '<p><a href="#/">All missions</a></p></div>';
+    return { title: L.title, html: h };
+  }
+
+  function viewBackOnTrack() {
+    var H = D.habits, T = H.lineTypes;
+    var h = '<div class="narrow stack" style="margin:0 auto"><div><p class="eyebrow">Start here</p><h1 tabindex="-1">' + esc(H.title) + "</h1></div>";
+    h += '<section><h2>Four things that go wrong</h2><ul class="tiles" style="margin-top:10px">' + H.fourThings.map(function (x) { return "<li><b>" + esc(x.title) + "</b><br>" + esc(x.text) + "</li>"; }).join("") + "</ul></section>";
+    h += '<section><h2>Read, Do, Check</h2><ol class="tiles" style="margin-top:10px">' + H.readDoCheck.map(function (x) { return '<li><span class="big">' + esc(x.word) + "</span>" + esc(x.text) + "</li>"; }).join("") + '</ol><p class="note" style="margin-top:10px">' + rich(H.readDoCheckFallback) + "</p></section>";
+    h += '<section><h2>Action, Information, or Goal?</h2><p style="margin-top:6px">' + esc(T.intro) + '</p><ul class="tiles" style="margin-top:10px">' + T.types.map(function (x) {
+      return '<li><span class="letter" aria-hidden="true">' + esc(x.letter) + "</span><br><b>" + esc(x.name) + "</b><br>" + esc(x.text) + '<br><span class="muted">Example: ' + rich(x.example) + "</span></li>";
+    }).join("") + '</ul><p class="note" style="margin-top:10px">' + esc(T.watchFor) + "</p>";
+    h += '<h3 style="margin-top:20px">Practice: what kind of line is it?</h3><ol class="practice" style="margin-top:10px">' + T.practice.map(function (x, i) {
+      return '<li data-q="' + i + '"><p class="line">' + rich(x.line) + '</p><div class="seg" role="group" aria-label="Your answer for line ' + (i + 1) + '">' + T.types.map(function (t) {
+        return '<button type="button" data-act="pick" data-v="' + esc(t.letter) + '" aria-pressed="false">' + esc(t.letter) + '<span class="sr-only">, ' + esc(t.name) + "</span></button>";
+      }).join("") + '</div><p><button class="btn ghost" type="button" data-act="reveal">Show the answer</button></p><div class="answer" aria-live="polite" hidden></div></li>';
+    }).join("") + "</ol></section>";
+    h += '<section><h2>Pick ONE way</h2><p style="margin-top:6px">' + esc(H.pickOne.text) + '</p><ul class="tiles" style="margin-top:10px">' + H.pickOne.example.map(function (x) { return "<li><b>" + esc(x.label) + "</b><br>" + rich(x.text) + "</li>"; }).join("") + "</ul></section>";
+    h += '<section><h2>Check the screen</h2><ul class="tiles" style="margin-top:10px"><li><b>My screen matches</b><br>' + esc(H.checkScreen.matches) + "</li><li><b>My screen does not match</b><ol>" + H.checkScreen.doesNotMatch.map(function (t) { return "<li>" + rich(t) + "</li>"; }).join("") + "</ol></li></ul></section>";
+    h += '<section><h2>Save it and keep it findable</h2><ul style="margin-top:10px">' + H.saveIt.map(function (t) { return "<li>" + rich(t) + "</li>"; }).join("") + "</ul></section>";
+    h += '<section><h2>Media Offline</h2><p style="margin-top:6px">' + esc(H.mediaOffline.text) + '</p><ol class="numbered" style="margin-top:10px">' + H.mediaOffline.steps.map(function (t) { return "<li><span>" + esc(t) + "</span></li>"; }).join("") + "</ol></section>";
+    h += '<section><h2>The Show Me check</h2><ul style="margin-top:10px">' + H.showMeCheck.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + '</ul><p style="margin-top:10px"><b>' + esc(H.showMeThen) + "</b></p></section>";
+    var ct = continueTarget();
+    h += '<p><a class="btn amber" href="' + (ct ? ct.href : "#/") + '">' + (ct ? esc(ct.label) : "Go to my missions") + "</a></p></div>";
+    return { title: "Back on Track", html: h, nav: "back-on-track" };
+  }
+
+  function viewTeachers() {
+    var h = '<div class="narrow stack" style="margin:0 auto"><div><p class="eyebrow">For teachers</p><h1 tabindex="-1">About this app</h1></div>' +
+      "<p>This is the step-by-step version of the Premiere Basics mission cards for Videography. Students keep it open next to Premiere and work one step at a time: read it, do it, check the screen.</p>" +
+      '<section><h2>What it stores, and where</h2><ul style="margin-top:10px"><li>Progress is saved only in each student\'s own browser, on the computer they are using.</li><li>There is no sign-in. Nothing is sent to a server. There is no student data to collect.</li><li>A student can enter a last name so file names fill in for them. It stays on that computer.</li><li>Students can copy a progress code or download a file to move their progress to another computer.</li></ul></section>' +
+      '<section><h2>What counts as done</h2><p style="margin-top:6px">The teacher\'s initials on the paper mission card are the official record. The app is the student\'s own tracker. It is not a grade and not a submission.</p></section>' +
+      '<section><h2>Linking from Google Classroom</h2><p style="margin-top:6px">Every screen has its own link. For example, <code class="file">walshclassroom.com/premiere-basics/#/m/5</code> opens Mission 5, and <code class="file">#/m/5/s/7</code> opens Step 7.</p></section>' +
+      '<section><h2>A class progress view</h2><p style="margin-top:6px">There is no class view yet. Seeing a whole class needs Walsh Classroom accounts and classes, which are planned for later phases of the platform. Until then, this page shows no student data.</p></section>' +
+      '<p class="btn-row"><a class="btn" href="#/print/all">Print all missions</a><a class="btn ghost" href="#/">All missions</a></p></div>';
+    return { title: "For teachers", html: h };
+  }
+
+  var pendingImport = null;
+  function viewSettings() {
+    var s = store.settings(), size = typeof s.textSize === "number" ? s.textSize : 1;
+    var h = '<div class="narrow stack" style="margin:0 auto"><h1 tabindex="-1">Save, load, and settings</h1>' +
+      '<section class="stack"><h2>Save my progress</h2><p>Your progress saves on this computer by itself. Use a code or a file to move it to another computer, or to keep a backup.</p>' +
+      '<div class="btn-row"><button class="btn" type="button" data-act="copy-code">Copy my progress code</button><button class="btn ghost" type="button" data-act="download">Download a file</button></div>' +
+      '<div><label for="code-out"><b>My progress code</b></label><textarea id="code-out" readonly rows="3" style="font-family:var(--mono);font-size:0.85rem;margin-top:4px">' + esc(store.exportCode()) + '</textarea></div><p id="save-msg" aria-live="polite" class="muted"></p></section>' +
+      '<section class="stack"><h2>Load progress</h2><div><label for="code-in"><b>Paste a progress code</b></label><textarea id="code-in" rows="3" style="font-family:var(--mono);font-size:0.85rem;margin-top:4px"></textarea></div>' +
+      '<div class="btn-row"><button class="btn" type="button" data-act="load-code">Load this code</button><label class="btn ghost" for="file-in" style="cursor:pointer">Load a file</label><input class="sr-only" type="file" id="file-in" accept=".json,application/json"></div><div id="load-msg" aria-live="polite" class="stack"></div></section>' +
+      '<section class="stack"><h2>Last name (you can skip this)</h2><div><label for="ln"><b>Your last name</b></label><input type="text" id="ln" maxlength="40" autocomplete="off" value="' + esc(s.lastName || "") + '" style="margin-top:4px;max-width:320px"></div><p class="muted">It is only used to fill in file names like <code class="file">Titles_[YourLastName]</code>. It stays on this computer and is never sent anywhere.</p></section>' +
+      '<section class="stack"><h2>Text size and theme</h2><div class="btn-row"><button class="btn ghost" type="button" data-act="size" data-d="-1">A- Smaller</button><button class="btn ghost" type="button" data-act="size" data-d="1">A+ Bigger</button><button class="btn ghost" type="button" data-act="theme">Switch light or dark</button></div><p class="muted" id="size-msg" aria-live="polite">Text size ' + (size + 1) + " of " + SIZES.length + ".</p></section>" +
+      '<section class="stack"><h2>Reset</h2><p>This erases all progress and settings on this computer.</p><div id="reset-zone"><button class="btn ghost" type="button" data-act="reset-ask">Reset everything</button></div></section>' +
+      '<p><a href="#/">All missions</a></p></div>';
+    return { title: "Save, load, and settings", html: h };
+  }
+
+  /* ---------- Print ---------- */
+  function printMission(m) {
+    var h = '<article class="p-mission"><p class="eyebrow">Premiere Basics' + (m.number == null ? "" : ", Mission " + m.number) + "</p><h2 style=\"font-size:1.5rem\">" + esc(m.title) + "</h2><p><b>Goal:</b> " + rich(m.goal, true) + (m.minutes ? " (about " + m.minutes + " minutes)" : "") + "</p>";
+    if (m.intro) h += "<p>" + rich(m.intro, true) + "</p>";
+    if (m.files && m.files.length) h += "<div><h4>Files</h4><ul class=\"p-list\" style=\"margin-top:6px\">" + m.files.map(function (f) { return '<li><span class="p-box"></span><span>' + rich(f, true) + "</span></li>"; }).join("") + "</ul>" + (m.filesHint ? '<p style="margin-top:6px">' + rich(m.filesHint, true) + "</p>" : "") + "</div>";
+    if (m.vocabulary && m.vocabulary.length) h += "<div><h4>Words to know</h4><ul style=\"margin-top:6px\">" + m.vocabulary.map(function (v) { return "<li><b>" + esc(v.term) + ":</b> " + esc(v.def) + "</li>"; }).join("") + "</ul></div>";
+    h += "<div><h4>Steps</h4>";
+    var lastHead = null;
+    stepsOf(m).forEach(function (x) {
+      var s = x.step;
+      if (x.heading && x.heading !== lastHead) { h += '<p class="p-part">' + esc(x.heading) + "</p>"; lastHead = x.heading; }
+      h += '<div class="p-step"><span class="p-box"></span><div><p><b>' + s.n + ".</b> " + rich(s.text, true) + "</p>";
+      if (s.ways) h += "<ul>" + s.ways.map(function (w) { return "<li><b>Way " + esc(w.label) + ":</b> " + rich(w.text, true) + "</li>"; }).join("") + "</ul>";
+      if (s.check) h += '<p class="p-check">Check: ' + rich(s.check, true) + "</p>";
+      if (s.note) h += "<p><i>Tip: " + rich(s.note, true) + "</i></p>";
+      h += "</div></div>";
+    });
+    h += "</div>";
+    (m.writeIns || []).forEach(function (w) {
+      h += '<div style="break-inside:avoid"><h4>' + esc(w.title) + "</h4>";
+      if (w.kind === "table") {
+        h += '<table class="p-table" style="margin-top:6px"><thead><tr>' + w.columns.map(function (c) { return "<th>" + esc(c) + "</th>"; }).join("") + "</tr></thead><tbody>" + w.rows.map(function (r) {
+          var cells = ""; for (var c = 1; c < w.columns.length; c++) cells += "<td></td>";
+          return "<tr><th>" + rich(r, true) + "</th>" + cells + "</tr>";
+        }).join("") + "</tbody></table>";
+      } else {
+        h += w.prompts.map(function (p) { return '<p style="margin-top:6px">' + esc(p) + '</p><div class="p-rule"></div><div class="p-rule"></div>'; }).join("");
+      }
+      h += "</div>";
+    });
+    h += '<div style="break-inside:avoid"><h4>Show Me</h4><p style="margin-top:6px">' + esc(m.showMe.intro) + '</p><ul class="p-list" style="margin-top:6px">' + m.showMe.items.map(function (t) { return '<li><span class="p-box"></span><span>' + rich(t, true) + "</span></li>"; }).join("") + "</ul>" +
+      '<p class="p-sign"><span>Mr. Walsh\'s initials ____________</span><span>Time finished ____________</span></p></div></article>';
+    return h;
+  }
+  function viewPrint(k) {
+    var list = k === "all" ? ALL : [byKey(k)].filter(Boolean);
+    if (!list.length) return viewHome();
+    var h = '<div class="narrow" style="margin:0 auto"><div class="no-print stack"><h1 tabindex="-1">' + (k === "all" ? "Print all missions" : "Print " + esc(nameOf(list[0]))) + '</h1><p>This is the paper version. It prints in black and white with empty boxes.</p><p class="btn-row"><button class="btn amber" type="button" data-act="print">Print</button><a class="btn ghost" href="' + (k === "all" ? "#/" : "#/m/" + k) + '">Back</a></p></div>' + list.map(printMission).join("") + "</div>";
+    return { title: "Print", html: h };
+  }
+
+  /* ---------- Stuck? panel ---------- */
+  var panelOpen = false, panelReturn = null;
+  function openStuck(from) {
+    if (panelOpen) return;
+    panelOpen = true; panelReturn = from || document.activeElement;
+    var H = D.habits, r = route(), m = r[0] === "m" ? byKey(r[1]) : null;
+    var h = '<div class="scrim" data-act="stuck-close"></div><aside class="panel" role="dialog" aria-modal="true" aria-labelledby="stuck-title"><div class="panel-head"><h2 id="stuck-title" tabindex="-1">Stuck?</h2><button class="btn ghost" type="button" data-act="stuck-close">Close</button></div>';
+    h += '<section><h3>Do this in order</h3><ol class="numbered">' + H.stuckInOrder.map(function (x) { return "<li><span><b>" + esc(x.title) + ".</b> " + esc(x.text) + "</span></li>"; }).join("") + "</ol>";
+    if (m && m.video) h += '<p><a href="#/m/' + keyOf(m) + '" data-act="stuck-close-link">The video is on the ' + esc(shortOf(m)) + " page</a></p>";
+    h += '<details class="fold"><summary>More things to try</summary><div class="fold-body"><ol>' + D.stuckOrder.map(function (t) { return "<li>" + rich(t) + "</li>"; }).join("") + "</ol></div></details></section>";
+    h += '<section><h3>I see this, try this</h3><div><label for="fix-q" class="sr-only">Search the quick fixes</label><input type="search" id="fix-q" placeholder="Search, like gap or sound" autocomplete="off"></div><p class="sr-only" id="fix-count" aria-live="polite"></p><ul class="fixes">' + D.quickFixes.map(function (f) { return "<li><b>" + rich(f.problem) + "</b>" + rich(f.fix) + "</li>"; }).join("") + '</ul><p id="fix-none" hidden>Nothing matches. Try a different word, or ask a neighbor.</p></section>';
+    h += '<section><h3>Media Offline</h3><p>' + esc(H.mediaOffline.text) + '</p><ol class="numbered">' + H.mediaOffline.steps.map(function (t) { return "<li><span>" + esc(t) + "</span></li>"; }).join("") + "</ol></section>";
+    h += "<section><h3>" + esc(D.keys.title) + '</h3><table class="keys-table"><tbody>' + D.keys.rows.map(function (k) { return '<tr><th scope="row">' + rich(k.keys) + "</th><td>" + esc(k.does) + "</td></tr>"; }).join("") + '</tbody></table><p class="muted" style="font-size:1rem">' + esc(D.keys.footnote) + "</p></section>";
+    h += '<section><p><a href="#/back-on-track" data-act="stuck-close-link">Back on Track: how to work a mission</a></p></section></aside>';
+    document.getElementById("panel-root").innerHTML = h;
+    document.getElementById("stuck-title").focus();
+  }
+  function closeStuck() {
+    if (!panelOpen) return;
+    panelOpen = false;
+    document.getElementById("panel-root").innerHTML = "";
+    var back = panelReturn && document.contains(panelReturn) ? panelReturn : document.getElementById("stuck-btn");
+    back.focus();
+  }
+
+  /* ---------- Router and render ---------- */
+  function route() { return location.hash.replace(/^#\/?/, "").split("?")[0].split("/").filter(Boolean); }
+  function pick() {
+    var r = route(), m;
+    if (r[0] === "m" && (m = byKey(r[1]))) {
+      if (r[2] === "s") return viewStep(m, parseInt(r[3], 10));
+      if (r[2] === "show-me") return viewShowMe(m);
+      return viewMission(m);
+    }
+    if (r[0] === "back-on-track") return viewBackOnTrack();
+    if (r[0] === "launch") return viewLaunch();
+    if (r[0] === "print") return viewPrint(r[1] || "all");
+    if (r[0] === "teachers") return viewTeachers();
+    if (r[0] === "settings") return viewSettings();
+    return viewHome();
+  }
+  var current = null;
+  function render(keepScroll) {
+    var key = route().join("/");
+    var changed = key !== ui.key;
+    if (changed) { ui.key = key; ui.phase = "read"; ui.focus = null; pendingImport = null; }
+    current = pick();
+    main.innerHTML = current.html;
+    document.title = current.title + " | Premiere Basics Missions";
+    Array.prototype.forEach.call(document.querySelectorAll(".app-head nav a"), function (a) {
+      if (a.getAttribute("data-nav") === current.nav) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    drawBanners();
+    if (current.after) current.after();
+    var target = ui.focus ? document.getElementById(ui.focus) : null;
+    ui.focus = null;
+    if (changed && !keepScroll) {
+      window.scrollTo(0, 0);
+      var h1 = main.querySelector("h1");
+      if (h1 && firstRender === false) h1.focus({ preventScroll: true });
+      if (current.live) document.getElementById("live").textContent = current.live;
+    } else if (target) target.focus();
+    firstRender = false;
+  }
+  var firstRender = true;
+
+  function drawBanners() {
+    var h = "", s = store.settings(), r = route();
+    if (store.inMemory()) h += '<div class="banner warn" role="status"><p><b>Progress will not be saved in this window.</b> Try a normal Chrome window, or use <a href="#/settings">Save my progress</a>.</p></div>';
+    if (!r.length && !s.botDismissed) h += '<div class="banner"><p><b>New here?</b> <a href="#/back-on-track">Start with Back on Track</a>. It shows how to work a mission.</p><button class="btn ghost" type="button" data-act="bot-dismiss">Got it</button></div>';
+    document.getElementById("banners").innerHTML = h;
+  }
+
+  /* ---------- Theme and text size ---------- */
+  var SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  var MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
+  function isDark() { return root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; }
+  function paintTheme() {
+    var b = document.getElementById("theme-btn"), dark = isDark();
+    b.innerHTML = dark ? SUN : MOON;
+    b.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+  }
+  function applySettings() {
+    var s = store.settings();
+    if (s.theme) root.dataset.theme = s.theme; else delete root.dataset.theme;
+    root.style.fontSize = SIZES[typeof s.textSize === "number" ? s.textSize : 1] + "%";
+    paintTheme();
+  }
+
+  /* ---------- Actions ---------- */
+  function today() { var d = new Date(); function p(n) { return (n < 10 ? "0" : "") + n; } return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()); }
+  function rerender(focusId) { ui.focus = focusId || null; render(); }
+  function stepAdvance() {
+    var st = current && current.step; if (!st) return;
+    if (st.done) { location.hash = st.next; return; }
+    if (ui.phase === "read") { ui.phase = "check"; rerender("check-box"); }
+    else if (ui.phase === "check") { store.setStep(st.m.id, st.n, true); location.hash = st.next; }
+    else { ui.phase = "read"; rerender("did-btn"); }
+  }
+  function loadMsg(html) { var el = document.getElementById("load-msg"); if (el) el.innerHTML = html; }
+  function tryImport(text) {
+    if (!fromCode(text)) { loadMsg('<p class="banner warn"><b>That code did not work.</b> Check that you copied all of it, then try again. Nothing was changed.</p>'); return; }
+    if (store.hasProgress()) {
+      pendingImport = text;
+      loadMsg('<div class="banner warn"><p><b>This will replace the progress on this computer.</b> Replace it?</p><div class="btn-row"><button class="btn" type="button" data-act="import-yes">Replace my progress</button><button class="btn ghost" type="button" data-act="import-no">Cancel</button></div></div>');
+      var b = document.querySelector('[data-act="import-yes"]'); if (b) b.focus();
+    } else finishImport(text);
+  }
+  function finishImport(text) {
+    store.importCode(text); pendingImport = null; applySettings(); render();
+    loadMsg('<p class="banner"><b>Loaded.</b> Your progress is on this computer now.</p>');
+  }
+
+  var ACT = {
+    theme: function () { store.setSetting("theme", isDark() ? "light" : "dark"); applySettings(); },
+    size: function (el) {
+      var s = store.settings(), cur = typeof s.textSize === "number" ? s.textSize : 1, n = Math.max(0, Math.min(SIZES.length - 1, cur + parseInt(el.getAttribute("data-d"), 10)));
+      store.setSetting("textSize", n); applySettings();
+      var msg = document.getElementById("size-msg"); if (msg) msg.textContent = "Text size " + (n + 1) + " of " + SIZES.length + ".";
+    },
+    stuck: function (el) { openStuck(el); },
+    "stuck-close": function () { closeStuck(); },
+    "stuck-close-link": function () { panelOpen = false; document.getElementById("panel-root").innerHTML = ""; return true; },
+    "bot-dismiss": function () { store.setSetting("botDismissed", true); drawBanners(); },
+    howto: function (el) {
+      var open = el.getAttribute("aria-expanded") !== "true";
+      el.setAttribute("aria-expanded", open); document.getElementById("howto-body").hidden = !open; store.setSetting("howToOpen", open);
+    },
+    layout: function (el) { store.setSetting("layout", el.getAttribute("data-v")); render(); var b = document.querySelector('[data-act="layout"][aria-pressed="true"]'); if (b) b.focus(); },
+    ack: function (el) { store.ackUpdate(el.getAttribute("data-m")); render(); },
+    did: function () { stepAdvance(); },
+    match: function () { stepAdvance(); },
+    nomatch: function () { ui.phase = "nomatch"; rerender("nomatch-box"); },
+    reread: function () { ui.phase = "read"; rerender("did-btn"); },
+    skip: function () { var st = current.step; store.setStep(st.m.id, st.n, true); location.hash = st.next; },
+    undone: function () { var st = current.step; store.setStep(st.m.id, st.n, false); ui.phase = "read"; rerender("did-btn"); },
+    way: function (el) { swapWays(el, function (m, n) { store.setWay(m.id, n, el.getAttribute("data-w")); showAllWays[m.id + ":" + n] = false; }); },
+    "ways-toggle": function (el) { swapWays(el, function (m, n) { showAllWays[m.id + ":" + n] = !showAllWays[m.id + ":" + n]; }); },
+    initial: function (el) { var m = byId(el.getAttribute("data-m")); store.setStatus(m.id, "initialed", today()); refreshShowMe(m, true); },
+    uninitial: function (el) { var m = byId(el.getAttribute("data-m")); store.setStatus(m.id, null); refreshShowMe(m, true); },
+    pick: function (el) {
+      Array.prototype.forEach.call(el.parentNode.children, function (b) { b.setAttribute("aria-pressed", b === el); });
+    },
+    reveal: function (el) {
+      var li = el.closest("li"), q = D.habits.lineTypes.practice[+li.getAttribute("data-q")], picked = li.querySelector('[aria-pressed="true"]'), box = li.querySelector(".answer");
+      var mine = picked ? picked.getAttribute("data-v") : null;
+      box.hidden = false;
+      box.innerHTML = "<p><b>" + (mine == null ? "The answer is " + esc(q.answer) + "." : (mine === q.answer ? "Yes, it is " + esc(q.answer) + "." : "Not quite. It is " + esc(q.answer) + ".")) + "</b></p><p>" + esc(q.why) + "</p>";
+    },
+    print: function () { window.print(); },
+    "copy-code": function () {
+      var code = store.exportCode(), out = document.getElementById("code-out"), msg = document.getElementById("save-msg");
+      out.value = code;
+      function ok() { msg.textContent = "Copied. Paste it somewhere safe, like a Google Doc or an email to yourself."; }
+      function fallback() { out.focus(); out.select(); try { document.execCommand("copy") ? ok() : (msg.textContent = "Select the code in the box and copy it."); } catch (e) { msg.textContent = "Select the code in the box and copy it."; } }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code).then(ok, fallback); else fallback();
+    },
+    download: function () {
+      var blob = new Blob([JSON.stringify(store.all(), null, 2)], { type: "application/json" }), a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = "premiere-basics-progress.json";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+      document.getElementById("save-msg").textContent = "Downloaded premiere-basics-progress.json. Keep it in your Premiere Basics folder or your Google Drive.";
+    },
+    "load-code": function () { tryImport(document.getElementById("code-in").value); },
+    "import-yes": function () { if (pendingImport) finishImport(pendingImport); },
+    "import-no": function () { pendingImport = null; loadMsg("<p>Nothing was changed.</p>"); },
+    "reset-ask": function () {
+      document.getElementById("reset-zone").innerHTML = '<div class="banner warn"><p><b>Erase all progress on this computer?</b> You cannot undo this.</p><div class="btn-row"><button class="btn" type="button" data-act="reset-yes">Yes, erase it</button><button class="btn ghost" type="button" data-act="reset-no">Cancel</button></div></div>';
+      document.querySelector('[data-act="reset-no"]').focus();
+    },
+    "reset-no": function () { render(); },
+    "reset-yes": function () { store.clearAll(); applySettings(); render(); document.getElementById("reset-zone").insertAdjacentHTML("beforeend", '<p role="status" style="margin-top:10px"><b>Everything was erased.</b></p>'); }
+  };
+  function swapWays(el, change) {
+    var box = el.closest(".ways"), m = byId(box.getAttribute("data-m")), n = +box.getAttribute("data-n");
+    var step = stepsOf(m).filter(function (x) { return x.n === n; })[0].step;
+    change(m, n);
+    var tmp = document.createElement("div"); tmp.innerHTML = waysHtml(m, step);
+    var fresh = tmp.firstChild; box.parentNode.replaceChild(fresh, box);
+    var f = fresh.querySelector('[data-act="ways-toggle"]') || fresh.querySelector("button"); if (f) f.focus();
+  }
+  function refreshShowMe(m, focus) {
+    var box = document.getElementById("sm-status"); if (!box) return;
+    box.innerHTML = showMeStatus(m);
+    if (focus) { var b = box.querySelector("button"); if (b) b.focus(); }
+  }
+
+  document.addEventListener("click", function (e) {
+    var el = e.target.closest ? e.target.closest("[data-act]") : null;
+    if (!el) return;
+    var fn = ACT[el.getAttribute("data-act")];
+    if (fn && fn(el) !== true && el.tagName !== "A") e.preventDefault();
+  });
+  document.addEventListener("change", function (e) {
+    var t = e.target, kind = t.getAttribute && t.getAttribute("data-chg");
+    if (t.id === "file-in" && t.files && t.files[0]) {
+      var fr = new FileReader();
+      fr.onload = function () { tryImport(String(fr.result)); };
+      fr.onerror = function () { loadMsg('<p class="banner warn"><b>That file could not be read.</b> Nothing was changed.</p>'); };
+      fr.readAsText(t.files[0]); t.value = "";
+      return;
+    }
+    if (!kind) return;
+    var mid = t.getAttribute("data-m"), i = +t.getAttribute("data-i"), m = byId(mid);
+    if (kind === "step") store.setStep(mid, i, t.checked);
+    else if (kind === "showme" || kind === "launch") store.setShowMe(mid, i, t.checked);
+    else store.setCheck(mid, kind, i, t.checked);
+    if (m) { var ms = document.getElementById("m-status"); if (ms) ms.innerHTML = badge(m); refreshShowMe(m); }
+  });
+  document.addEventListener("input", function (e) {
+    var t = e.target;
+    if (t.id === "ln") { store.setSetting("lastName", t.value.trim().slice(0, 40)); return; }
+    if (t.id === "fix-q") {
+      var q = t.value.trim().toLowerCase(), shown = 0;
+      Array.prototype.forEach.call(document.querySelectorAll(".fixes li"), function (li) { var hit = !q || li.textContent.toLowerCase().indexOf(q) >= 0; li.hidden = !hit; if (hit) shown++; });
+      document.getElementById("fix-none").hidden = shown > 0;
+      document.getElementById("fix-count").textContent = shown + " quick fixes shown.";
+      return;
+    }
+    var wid = t.getAttribute && t.getAttribute("data-wi");
+    if (!wid) return;
+    var mid = t.getAttribute("data-m"), v = store.get(mid).writeIns[wid] || {};
+    v[t.getAttribute("data-k")] = t.value;
+    store.setWriteIn(mid, wid, v);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (panelOpen) {
+      if (e.key === "Escape") { closeStuck(); return; }
+      if (e.key === "Tab") {
+        var f = document.querySelectorAll(".panel a[href], .panel button, .panel input, .panel summary");
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1], a = document.activeElement;
+        if (e.shiftKey && (a === first || !a.closest(".panel"))) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && a === last) { e.preventDefault(); first.focus(); }
+      }
+      return;
+    }
+    if (!current || !current.step) return;
+    var tag = e.target.tagName;
+    if (/^(INPUT|TEXTAREA|SELECT|VIDEO)$/.test(tag)) return;
+    if (e.key === "Enter" && /^(BUTTON|A|SUMMARY)$/.test(tag)) return;
+    if (e.key === "ArrowRight" || e.key === "Enter") { e.preventDefault(); stepAdvance(); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); location.hash = current.step.prev; }
+  });
+  window.addEventListener("hashchange", function () { if (panelOpen) { panelOpen = false; document.getElementById("panel-root").innerHTML = ""; } render(); });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paintTheme);
+
+  applySettings();
+  render();
+})();
+</script>
+<script src="/platform/wc.js" defer></script>
+</body>
+</html>
