@@ -49,7 +49,7 @@ Add `?debug=1` before the `#` to see each mission's wording status. Students nev
 
 ## Publish
 
-Nothing has been pushed yet. The `gh` tool is not installed on this laptop, so the first publish needs a few clicks:
+Published on 2026-11-13. To publish changes, double-click `publish-premiere-basics.bat`. The first-time setup was:
 
 1. On github.com, make a new **public** repo named `premiere-basics` under `twalsh95`. Do not add a README or license.
 2. Double-click `publish-premiere-basics.bat`. Sign in if a window asks.
@@ -57,7 +57,7 @@ Nothing has been pushed yet. The `gh` tool is not installed on this laptop, so t
 4. On the repo's main page, click the gear next to **About** and add the topic `walshclassroom`.
 5. Wait a minute or two, then open `walshclassroom.com/premiere-basics/`.
 
-**The app is published hidden on purpose** (`"hidden": true` in `walshclassroom.json`). It works for anyone with the link but has no card on the hub. After the MacBook test, remove the `"hidden": true` line (and change `"status"` to `"live"` if you like), then run the publish file again. The card appears the next time the hub's app list rebuilds (daily, or run **Update app list** in the hub repo's Actions tab).
+**The app is live on the hub** (made live 2026-11-13, before the MacBook test). Its card appears the next time the hub's app list rebuilds (daily, or run **Update app list** in the hub repo's Actions tab). To hide it again, add `"hidden": true` to `walshclassroom.json` and publish.
 
 `missions.json` and `BUILD_INSTRUCTIONS.md` stay on this laptop. `.gitignore` keeps them out of the published site, so `missions.js` is the only copy of the content in the app.
 
